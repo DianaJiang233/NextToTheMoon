@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Moon Diary with Goose</title>
+<link href="https://fonts.googleapis.com/css2?family=Handjet:wght@200&display=block" rel="stylesheet">
+  <style>
+    body { background: #000000; color: white; font-family: 'Handjet', cursive;; text-align: center; padding: 20px; }
+    #moon { width: 300px; cursor: pointer; margin-top: 30px; }
+h2 {
+  font-size: 33px; /* ← 你想要多大就写多少，比如 18px、32px 都可以 */
+  font-family: 'Handjet', cursive; /* 保持风格一致 */
+}
+
+#myDiaryBox {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 10px;
+  min-height: 150px;
+  font-size: 20px;
+  width: 400px;
+  position: fixed;
+  top: 550px;
+  left: 70%;
+      font-family: 'Handjet', cursive;
+  //transform: translateY(-50%);
+}
+
+/* 自己的 gif */
+#myGif {
+   width: 200px;
+  transition: transform 0.2s ease;
+  position: fixed;
+  top: 350px;
+  left: 76%;
+}
+    textarea {
+     width: 100%;     /* 撑满父容器 */
+  height: 150px;
+  font-size: 25px;
+  //padding: 15px;    /* 你想要的内边距在这设置 */
+  border-radius: 10px;
+      font-family: 'Handjet', cursive;
+  border: none;
+  box-sizing: border-box; /* 👈 保证 padding 不影响宽度 */
+  background: transparent; /* 可选：跟父容器融为一体 */
+  color: white;    }
+    //#friendZone {
+      margin-top: 30px;
+    }
+    #friendDiary {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 10px;
+  min-height: 150px;
+  font-size: 25px;
+  width: 400px;
+      font-family: 'Handjet', cursive;
+  position: fixed;
+  top: 550px;
+  left: 10%;
+  text-align: left;
+}
+
+/* 小鹅的 gif */
+#gooseGif {
+  width: 200px;
+  transition: transform 0.2s ease;
+  position: fixed;
+  top: 350px;
+  left: 16%;
+}
+  </style>
+</head>
+<body>
+
+<img id="moon" src="https://dianajiang233.github.io/GooseSing/moon.gif" alt="Moon" />
+<img id="myGif" src="https://dianajiang233.github.io/GooseSing/mydiary.gif" alt="You" />
+<div id="myDiaryBox">
+  <textarea id="myDiary" placeholder="Type here..."></textarea>
+</div>
+<div id="friendZone">
+  <h2>You and Goose write together, <span id="moonWhisper" style="opacity: 0; transition: opacity 0.8s;">
+    because tonight the Moon listens
+  </span></h2>
+  <img id="gooseGif" src="https://dianajiang233.github.io/GooseSing/goosewrite.gif" alt="Goose">
+  <div id="friendDiary"></div>
+</div>
+
+<script>
+  const moon = document.getElementById('moon');
+moon.addEventListener('mouseenter', () => {
+    moon.src = 'https://dianajiang233.github.io/GooseSing/moonlight.gif'; // 发光动图
+  });
+
+  moon.addEventListener('mouseleave', () => {
+    moon.src = 'https://dianajiang233.github.io/GooseSing/moon.gif'; // 原图
+  });
+const moonQuotes = [
+  "🌕 The moon whispered: 'I only disappear to rest my glow. When I appear, I hope you keep talking to me.'",
+  "🌕 The moon said: 'I see everything, but I speak only to those who write.'",
+  "🌕 The moon hummed softly: 'Even the stars listen when you dream.'",
+  "🌕 The moon blinked slowly: 'Clouds are just my sighs. Is your diary your exclamation, or your sigh?'",
+  "🌕 The moon murmured: 'Tonight, I carry your words to the tides.'",
+ "🌕 The moon murmured: 'Your words may vanish on paper, but they echo in my light.'",
+ "🌕 The moon murmured: 'When no one else listens, I still do.'",
+ "🌕 The moon murmured: 'You think you’re writing alone, but I’m always just above.'",
+];
+
+moon.addEventListener('click', () => {
+  const diaryText = myDiary.value.trim();
+
+  if (diaryText === "") {
+    alert("Your diary is empty.");
+    return;
+  }
+
+  // 随机一句月亮的话
+  const moonLine = moonQuotes[Math.floor(Math.random() * moonQuotes.length)];
+
+  // 当前日期
+  const date = new Date();
+  const formattedDate = `🗓️ ${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+
+  // 拼接最终文本
+  const finalText = `${formattedDate}\n${moonLine}\n\n${diaryText}`;
+
+  // 下载逻辑
+  const blob = new Blob([finalText], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'moon_note.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+  const diaryModal = document.getElementById('diaryModal');
+  const myDiary = document.getElementById('myDiary');
+  const friendDiary = document.getElementById('friendDiary');
+  const gooseGif = document.getElementById('gooseGif');
+
+
+  // 小鹅的多个日记池
+  const gooseDiaryPool = [
+    "Sometimes the moon is full, sometimes it is crescent—because it breathes in clouds and breathes them back out...",
+    
+    "Sometimes I think about the clouds and whether they get lonely up there, wandering without ever touching the ground. Maybe that's why it rains—because they miss us, and the Earth hugs them back with rivers and lakes.",
+    
+    "If dreams are seeds, maybe tonight I planted a forest. One filled with fireflies, silver rivers, and endless soft grass where no one ever feels alone.",
+    
+    "I watched a single leaf fall tonight. It spun and floated and danced before it touched the earth. I wonder if wishes fall the same way—quiet, unnoticed, but still real.",
+    
+    "Tonight, everything feels still. Even the stars seem to hold their breath. I wonder if somewhere, someone else is staring at the same sky, wishing on the same silent dreams.",
+"Tonight I saw my reflection in the lake. For a moment, I thought I was the moon, just rounder and fluffier.",
+"I tried to count all the stars tonight, but I kept losing track after ten. Maybe that’s the sky’s way of saying: just feel it, don’t measure it.",
+"I wrote a poem in the dirt with my beak, but the wind came and read it too fast. I hope it liked it.",
+"The moon whispered something to me, but I only caught the first word: 'come.' I'm not sure where it wants me to go, but I packed a feather just in case.",
+"Today I walked in circles for an hour. Not because I was lost, but because I liked the way the wind hugged me from every side.",
+  ];
+
+  // 每次打开随机抽一篇
+  const gooseFullText = gooseDiaryPool[Math.floor(Math.random() * gooseDiaryPool.length)];
+  
+  let gooseCurrentIndex = 0;
+    let typingTimer;
+
+ 
+  myDiary.addEventListener('input', () => {
+    if (gooseCurrentIndex < gooseFullText.length) {
+      friendDiary.textContent += gooseFullText[gooseCurrentIndex];
+      gooseCurrentIndex++;
+    }
+
+    // Goose shakes a bit when typing
+    gooseGif.style.transform = 'rotate(-5deg)';
+    setTimeout(() => {
+      gooseGif.style.transform = 'rotate(5deg)';
+    }, 100);
+    setTimeout(() => {
+      gooseGif.style.transform = 'rotate(0deg)';
+    }, 200);
+
+  // YOU also shake!
+  myGif.style.transform = 'rotate(-5deg)';
+  setTimeout(() => {
+    myGif.style.transform = 'rotate(5deg)';
+  }, 100);
+  setTimeout(() => {
+    myGif.style.transform = 'rotate(0deg)';
+  }, 200);
+  });
+
+const moonWhisper = document.getElementById('moonWhisper');
+
+moon.addEventListener('mouseenter', () => {
+  moon.src = 'https://dianajiang233.github.io/GooseSing/moonlight.gif';
+  moonWhisper.style.opacity = 1;
+});
+
+moon.addEventListener('mouseleave', () => {
+  moon.src = 'https://dianajiang233.github.io/GooseSing/moon.gif';
+  moonWhisper.style.opacity = 0;
+});
+
+   function checkAndReturnHome() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+
+    if (!(hours === 23 && minutes >= 1 && minutes <= 59)) {
+      // 如果超过00:05，跳回吸血鬼梦境首页
+      window.location.href = "https://your-dream-page.com"; // 改成你的吸血鬼梦境页面地址
+    }
+  }
+
+  // 检查一次
+  checkAndReturnHome();
+  // 每20秒检查一次
+  setInterval(checkAndReturnHome, 20000);
+
+
+</script>
+</body>
+</html>
