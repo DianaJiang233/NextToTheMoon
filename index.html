@@ -229,7 +229,7 @@ moon.addEventListener('mouseleave', () => {
   const hours = now.getHours();
   const minutes = now.getMinutes();
 
-  if (!(hours === 17 && minutes >= 1 && minutes <= 13)) {
+  if (!(hours === 17 && minutes >= 1 && minutes <= 36)) {
     const overlay = document.getElementById('goodbyeOverlay');
     overlay.style.pointerEvents = 'auto';
     overlay.style.opacity = 1;
